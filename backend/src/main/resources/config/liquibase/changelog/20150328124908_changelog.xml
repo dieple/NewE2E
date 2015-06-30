@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd
+                   http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+   <changeSet author="osdba (generated)" id="1427546954364-1">
+      <createTable tableName="authority_permission">
+         <column name="authority_name" type="VARCHAR(50)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="permission_name" type="VARCHAR(50)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="osdba (generated)" id="1427546954364-2">
+      <createTable tableName="permission">
+         <column name="name" type="VARCHAR(50)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="osdba (generated)" id="1427546954364-3">
+      <createTable tableName="user_permission">
+         <column name="user_id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+         <column name="permission_name" type="VARCHAR(50)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="osdba (generated)" id="1427546954364-4">
+      <addPrimaryKey columnNames="authority_name, permission_name"
+                     tableName="authority_permission"/>
+   </changeSet>
+   <changeSet author="osdba (generated)" id="1427546954364-5">
+      <addPrimaryKey columnNames="user_id, permission_name" tableName="user_permission"/>
+   </changeSet>
+   <changeSet author="osdba (generated)" id="1427546954364-6">
+      <addPrimaryKey columnNames="name"
+                     constraintName="permissionPK"
+                     tableName="permission"/>
+   </changeSet>
+   <changeSet author="osdba (generated)" id="1427546954364-7">
+      <addForeignKeyConstraint baseColumnNames="permission_name"
+                               baseTableName="authority_permission"
+                               constraintName="fk_authority_permission_name"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="name"
+                               referencedTableName="permission"/>
+   </changeSet>
+   <changeSet author="osdba (generated)" id="1427546954364-8">
+      <addForeignKeyConstraint baseColumnNames="user_id"
+                               baseTableName="user_permission"
+                               constraintName="fk_user_permission_user_id"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="T_USER"/>
+   </changeSet>
+   <changeSet author="osdba (generated)" id="1427546954364-9">
+      <addForeignKeyConstraint baseColumnNames="permission_name"
+                               baseTableName="user_permission"
+                               constraintName="fk_user_permission_permission_name"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="name"
+                               referencedTableName="permission"/>
+   </changeSet>
+   <changeSet author="osdba (generated)" id="1427546954364-10">
+      <addForeignKeyConstraint baseColumnNames="authority_name"
+                               baseTableName="authority_permission"
+                               constraintName="fk_authority_permission_authority_name"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="name"
+                               referencedTableName="T_AUTHORITY"/>
+
+       <loadData encoding="UTF-8"
+                 file="config/liquibase/permissions.csv"
+                 separator=";"
+                 tableName="permission">
+       </loadData>
+
+       <loadData encoding="UTF-8"
+                 file="config/liquibase/authorities_permissions.csv"
+                 separator=";"
+                 tableName="authority_permission"/>
+
+       <loadData encoding="UTF-8"
+                 file="config/liquibase/users_permissions.csv"
+                 separator=";"
+                 tableName="user_permission"/>
+
+   </changeSet>
+</databaseChangeLog>
